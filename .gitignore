@@ -1,0 +1,49 @@
+###############################################################################
+# Spark Realtime 项目 .gitignore  (Mac / IntelliJ / Maven / Scala / Spark)
+###############################################################################
+
+### Maven build output
+target/
+*/target/
+dependency-reduced-pom.xml
+
+### IntelliJ IDEA (忽略整个 .idea；如要共享 code style 请自行放行)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+### Mac OS 垃圾文件
+.DS_Store
+
+### Scala build meta (可选: Metals, Bloop, SBT 工程残留)
+.metals/
+.bloop/
+project/target/
+project/project/
+
+### VS Code (若你偶尔用)
+.vscode/
+
+### Spark checkpoints / runtime temp
+checkpoint/
+*.crc
+derby.log
+
+### Logs & runtime outputs
+*.log
+*.out
+*.err
+*.pid
+tmp/
+
+### 本地私密配置（模板另存 *.example）
+src/main/resources/config.properties.local
+src/main/resources/application.yml.local
+
+### 课程 Mock 大包不提交（或使用 Git LFS 再提交）
+**/gmall2020-mock-log-*.jar
+
+###############################################################################
+# 如需提交脚本：kf.sh / log.sh / application.yml.example，请确保未被忽略。
+###############################################################################
