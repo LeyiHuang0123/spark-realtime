@@ -41,8 +41,8 @@ tmp/
 src/main/resources/config.properties.local
 src/main/resources/application.yml.local
 
-### 课程 Mock 大包不提交（或使用 Git LFS 再提交）
-**/gmall2020-mock-log-*.jar
+# **/gmall2020-mock-log-*.jar
+!scripts/gmall2020-mock-log-*.jar
 
 ###############################################################################
 # 如需提交脚本：kf.sh / log.sh / application.yml.example，请确保未被忽略。
