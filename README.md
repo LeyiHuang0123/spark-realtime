@@ -1,4 +1,4 @@
-# Spark Realtime 项目（尚硅谷练习版 · Mac M4 环境）
+# Spark Realtime 项目（Mac M4 环境）
 
 > 基于尚硅谷 Spark Streaming 实时项目课程，在 **Apple Silicon / macOS** 本地一机版环境搭建：Mock 日志 → Kafka → Spark Streaming 分流 → DWD 多主题输出。本文记录环境、脚本、运行、常见坑以及后续扩展计划（Maxwell、ES、Redis、大屏）。
 
