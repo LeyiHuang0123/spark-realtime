@@ -124,7 +124,7 @@ spark-realtime/
 
 ```bash
 # 0. 克隆项目
-git clone https://github.com/hahoo-debug/spark-realtime.git
+git clone https://github.com/LeyiHuang0123/spark-realtime.git
 cd spark-realtime
 
 # 1. 配置 Kafka 地址（如非默认）
