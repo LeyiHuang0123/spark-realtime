@@ -133,7 +133,7 @@ object OdsBaseLogApp {
                 val pageItem    = gs(pageObj, "item")
                 val pageItemTyp = gs(pageObj, "item_type")
                 val duringTime  = gl(pageObj, "during_time")
-                val sourceType  = gs(pageObj, "sourceType")
+                val sourceType  = gs(pageObj, "source_type")
 
                 // 封装 PageLog
                 val pageLog = PageLog(
@@ -173,7 +173,7 @@ object OdsBaseLogApp {
                       page_item         = pageItemTyp,
                       page_item_type    = pageItemTyp,
                       during_time       = duringTime,
-                      sourceType        = sourceType,
+                      source_type        = sourceType,
                       display_type      = displayType,
                       display_item      = displayItem,
                       display_item_type = displayItemType,

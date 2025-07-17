@@ -15,7 +15,7 @@ case class PageLog(
                     page_item:String,
                     page_item_type:String,
                     during_time:Long,
-                    sourceType: String,
+                    source_type: String,
                     ts:Long
                   ) {
 }

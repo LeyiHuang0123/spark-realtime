@@ -15,7 +15,7 @@ case class PageDisplayLog (
                             page_item:String,
                             page_item_type:String,
                             during_time:Long,
-                            sourceType: String,
+                            source_type: String,
                             display_type:String,
                             display_item: String,
                             display_item_type:String,
