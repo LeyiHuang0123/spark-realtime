@@ -4,11 +4,12 @@ package com.atguigu.gmall.realtime.app
 import com.alibaba.fastjson.serializer.{SerializeConfig, SerializerFeature}
 import com.alibaba.fastjson.{JSON, JSONArray, JSONObject}
 import com.atguigu.gmall.realtime.bean.{StartLog, PageLog, PageDisplayLog, PageActionLog}
-import com.atguigu.gmall.realtime.util.{MyConfig, MyKafkaUtils, MyPropsUtils}
+import com.atguigu.gmall.realtime.util.{MyConfig, MyKafkaUtils, MyPropsUtils, MyOffsetsUtils}
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.spark.streaming.dstream.InputDStream
+import org.apache.spark.streaming.kafka010.{HasOffsetRanges, OffsetRange}
 
 import scala.util.Try
 import scala.collection.JavaConverters._
@@ -53,11 +54,24 @@ object OdsBaseLogApp {
     val ssc = new StreamingContext(conf, Seconds(batchSec))
 
     // ---------------- 2. Kafka 源流 ----------------
+    val groupId = "ods_base_log_group"
+    val kafkaOffsets = MyOffsetsUtils.readOffset(SOURCE_TOPIC, groupId)
+
     val kafkaDStream: InputDStream[ConsumerRecord[String, String]] =
-      MyKafkaUtils.getKafkaDStream(SOURCE_TOPIC, ssc, "ods_base_log_group")
+      if (kafkaOffsets != null && kafkaOffsets.nonEmpty)
+        MyKafkaUtils.getKafkaDStream(SOURCE_TOPIC, ssc, kafkaOffsets, groupId)
+      else
+        MyKafkaUtils.getKafkaDStream(SOURCE_TOPIC, ssc, groupId)
+
+    var offsetRanges: Array[OffsetRange] = Array.empty
+    val transformedDStream = kafkaDStream.transform { rdd =>
+      // 将 Kafka 的 offsetRanges 提取出来，保存到外部变量
+      offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+      rdd  // 不改变原始数据
+    }
 
     // ---------------- 3. 处理逻辑：分流 ----------------
-    kafkaDStream.foreachRDD { rdd =>
+    transformedDStream.foreachRDD { rdd =>
       rdd.foreachPartition { iter =>
         iter.foreach { record =>
           val jsonStr = record.value()
@@ -230,6 +244,7 @@ object OdsBaseLogApp {
         }
         MyKafkaUtils.flush()
       }
+      MyOffsetsUtils.saveOffset(SOURCE_TOPIC, groupId, offsetRanges)
     }
     // ---------------- 4. 启动 ----------------
     ssc.start()
